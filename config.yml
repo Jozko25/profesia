@@ -1,27 +1,120 @@
 # Search keywords. Each runs as separate query; results deduped by job ID.
 keywords:
+  # English
   - "AI engineer"
-  - "AI developer"
+  - "AI agent"
   - "AI automation"
-  - "machine learning engineer"
-  - "ML engineer"
+  - "AI specialist"
+  - "AI implementation"
+  - "AI consultant"
+  - "agentic AI"
+  - "process automation AI"
+  - "prompt engineer"
   - "LLM"
   - "generative AI"
-  - "prompt engineer"
-  - "data scientist AI"
   - "AI"
+  # Slovak / Czech
+  - "AI inžinier"
+  - "AI špecialista"
+  - "AI konzultant"
+  - "AI architekt"
+  - "umelá inteligencia"
+  - "strojové učenie"
+  - "AI automatizácia"
+  - "automatizácia procesov AI"
+  - "AI riešenia"
+
+# Drop any job whose TITLE contains any of these (case-insensitive substring).
+# Use to skip role types you don't want even if a keyword matched them.
+exclude_title_terms:
+  # English
+  - "developer"
+  - "fullstack"
+  - "full-stack"
+  - "full stack"
+  - "backend"
+  - "back-end"
+  - "front-end"
+  - "frontend"
+  - "embedded"
+  - "devops"
+  - "sre "
+  - "qa "
+  - "tester"
+  - ".net"
+  - "java "
+  - "react"
+  - "angular"
+  - "vue"
+  - "kotlin"
+  - "android"
+  - "ios "
+  - "swift"
+  # Slovak / Czech
+  - "vývojár"
+  - "vývojárka"
+  - "programátor"
+  - "programátorka"
+  - "softvérový inžinier"
+  - "softvérová inžinierka"
+  - "tester"
+  - "testerka"
+  - "administrátor"
+  - "účtovník"
+  - "účtovníčka"
+  - "audítor"
+  - "manažér predaja"
+  - "finančný"
+  - "finančná"
 
 # Max result pages per keyword (20 jobs/page). Keep low for cron.
 max_pages: 2
 
-# Optional LLM relevance filter. Leave empty to disable (notify all keyword hits).
-# When set, also requires OPENAI_API_KEY env var.
+# Server-side filters applied at profesia.sk (reduces noise + scraper load).
+# Leave a value null/empty to skip that filter.
+filters:
+  # Minimum salary. 0 = no filter.
+  min_salary: 2000
+  salary_period: m              # m = monthly, h = hourly
+
+  # Remote work: null=any, 0=on-site only, 1=fully remote, 2=hybrid/occasional
+  remote: null
+
+  # Employment type: null=any, or one of:
+  #   plny-uvazok, skrateny-uvazok, zivnost, na-dohodu-brigady, internship, dobrovolnictvo
+  employment_type: null
+
+  # Region: null=all Slovakia, or one of:
+  #   bratislavsky-kraj, trnavsky-kraj, trenciansky-kraj, nitriansky-kraj,
+  #   zilinsky-kraj, banskobystricky-kraj, presovsky-kraj, kosicky-kraj, zahranicie
+  region: null
+
+  # Max posting age in days. null=any, or 1/3/7/14/31.
+  max_age_days: null
+
+# Dashboard rendered to docs/index.html — served at <user>.github.io/<repo>/ when Pages enabled.
+dashboard:
+  title: "AI Jobs · Profesia.sk"
+  # How many jobs to keep in store (also bounds page size).
+  max_jobs: 500
+
+# Optional LLM relevance filter. Leave disabled to notify all keyword hits.
+# When enabled, requires OPENAI_API_KEY env var.
 llm_filter:
-  enabled: false
+  enabled: true
   model: "gpt-4o-mini"
   min_score: 6
   profile: |
-    I'm looking for AI Engineering roles: building AI/LLM products,
-    AI automation, agent systems, RAG, prompt engineering, ML engineering.
-    NOT interested in: pure data analyst, BI, classical statistics,
-    sales/marketing roles that just mention AI, hardware/robotics.
+    I'm looking for AI-focused roles where the job is about applying AI/LLMs
+    to real business problems: AI automation, agent systems, process automation
+    with AI, AI implementation/consulting, prompt engineering, RAG, AI strategy.
+
+    I am NOT a hardcore software developer — I don't want pure SWE roles even
+    if they mention AI. Skip: full-stack/backend/frontend developer roles,
+    .NET/Java/embedded engineers, DevOps, classical data scientist /
+    statistician roles, BI analysts, sales/marketing roles that just buzzword
+    "AI", hardware/robotics.
+
+    DO want: AI Agent Engineer, AI Specialist, AI Consultant, AI Implementation
+    Engineer, AI Solutions Architect, anything around no-code/low-code AI
+    workflows, LLM application building, automation with AI tools.
