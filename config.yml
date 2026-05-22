@@ -1,0 +1,27 @@
+# Search keywords. Each runs as separate query; results deduped by job ID.
+keywords:
+  - "AI engineer"
+  - "AI developer"
+  - "AI automation"
+  - "machine learning engineer"
+  - "ML engineer"
+  - "LLM"
+  - "generative AI"
+  - "prompt engineer"
+  - "data scientist AI"
+  - "AI"
+
+# Max result pages per keyword (20 jobs/page). Keep low for cron.
+max_pages: 2
+
+# Optional LLM relevance filter. Leave empty to disable (notify all keyword hits).
+# When set, also requires OPENAI_API_KEY env var.
+llm_filter:
+  enabled: false
+  model: "gpt-4o-mini"
+  min_score: 6
+  profile: |
+    I'm looking for AI Engineering roles: building AI/LLM products,
+    AI automation, agent systems, RAG, prompt engineering, ML engineering.
+    NOT interested in: pure data analyst, BI, classical statistics,
+    sales/marketing roles that just mention AI, hardware/robotics.
