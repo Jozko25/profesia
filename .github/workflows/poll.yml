@@ -32,14 +32,14 @@ jobs:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: python scraper.py
 
-      - name: Commit state
+      - name: Commit state + dashboard
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add state/seen.json
+          git add state/jobs.json docs/index.html
           if git diff --staged --quiet; then
-            echo "no state changes"
+            echo "no changes"
           else
-            git commit -m "chore: update seen.json [skip ci]"
+            git commit -m "chore: update jobs + dashboard [skip ci]"
             git push
           fi
